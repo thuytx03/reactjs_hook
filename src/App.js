@@ -5,19 +5,22 @@ import Container from 'react-bootstrap/Container';
 import Header from "./components/Header";
 import TableUsers from "./components/TableUsers";
 import { ToastContainer } from 'react-toastify';
-
-
+import Home from "./components/Home";
+import { Routes, Route, Link } from "react-router-dom";
 function App() {
-
-
 
   return (
     <>
       <div className="app-container">
-        <Container>
-          <Header />
+      <Header />
 
-          <TableUsers />
+        <Container>
+
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/users" element={<TableUsers />} />
+          </Routes>
+
         </Container>
 
       </div>

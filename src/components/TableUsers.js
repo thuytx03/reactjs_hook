@@ -5,21 +5,28 @@ import ReactPaginate from 'react-paginate';
 import ModalAddNew from './ModalAddNew';
 import ModalEditUser from './ModalEditUser';
 import ModalConfirm from './ModalConfirm';
-import _ from 'lodash';
-import { clear } from '@testing-library/user-event/dist/clear';
+import '../styles/TableUser.scss'
 const TableUsers = (props) => {
 
     const [listUser, setListUser] = useState([]);
     const [totalUsers, setTotalUsers] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
 
+    //add
     const [isShowModalAddNew, setIsShowModalAddNew] = useState(false)
-    
+
+    //edit
     const [isShowModalEditUser, setIsShowModalEditUser] = useState(false)
     const [dataUserEdit, setDataUserEdit] = useState({})
 
-    const [isShowModalDelete, setIsShowModalDelete]=useState(false)
+    //delete
+    const [isShowModalDelete, setIsShowModalDelete] = useState(false)
     const [dataUserDelete, setDataUserDelete] = useState({})
+
+    // Sắp xếp
+    const [sortBy, setSortBy] = useState('asc')
+    const [sortField, setSortField] = useState("id")
+
 
 
     // đóng tab modal
@@ -41,33 +48,27 @@ const TableUsers = (props) => {
         setIsShowModalEditUser(true)
     }
     //update
-    // const handleEditUserFormModal = (user) => {
-    //     let cloneListUser = _.cloneDeep(listUser);
-    //     let index = listUser.findIndex((item) => item.id === user.id);
-    //     cloneListUser[index].first_name = user.first_name;
-    //     setListUser(cloneListUser);
-
-    // };
     const handleEditUserFormModal = (id, updatedData) => {
         setListUser(prevListUser => (
-          prevListUser.map(user => (
-            user.id === id ? { ...user, ...updatedData } : user
-          ))
+            prevListUser.map(user => (
+                user.id === id ? { ...user, ...updatedData } : user
+            ))
         ));
-      };
-      
+    };
 
-    const handleDeleteUser=(user)=>{
+    //hiển thị modal confirm delete
+    const handleDeleteUser = (user) => {
         setIsShowModalDelete(true);
         setDataUserDelete(user)
 
     }
-    const handleDeleteUserFormModal=(id)=>{
+    //delete
+    const handleDeleteUserFormModal = (id) => {
         const newListUser = listUser.filter(user => user.id !== id);
         setListUser(newListUser);
         setIsShowModalDelete(false);
     }
-    
+
     useEffect(() => {
         //call api
         getUser(1);
@@ -87,9 +88,13 @@ const TableUsers = (props) => {
     //phân trang
     const handlePageClick = (event) => {
         getUser(+event.selected + 1);
-
-
     }
+
+    const handleSort = (sortBy, sortField) => {
+        setSortBy(sortBy);
+        setSortField(sortField)
+    }
+    console.log(sortBy, sortField);
     return (
         <>
             <div className="my-3 add-new d-flex justify-content-between align-items-center">
@@ -99,11 +104,27 @@ const TableUsers = (props) => {
             <Table striped bordered hover >
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Email</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Actions</th>
+                        <th >
+                            <div className='sort-header'>
+                                <span>ID</span>
+                                <span>
+                                    <i onClick={() => handleSort("desc", "id")} className="fa-solid fa-arrow-down-long" />
+                                    <i onClick={() => handleSort("asc", "id")} className="fa-solid fa-arrow-up-long" />
+                                </span>
+                            </div>
+                        </th>
+                        <th >Email</th>
+                        <th >
+                            <div className='sort-header'>
+                                <span>First Name</span>
+                                <span>
+                                    <i onClick={() => handleSort("desc", "first_name")} className="fa-solid fa-arrow-down-long" />
+                                    <i onClick={() => handleSort("asc", "first_name")} className="fa-solid fa-arrow-up-long" />
+                                </span>
+                            </div>
+                        </th>
+                        <th >Last Name</th>
+                        <th >Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -116,7 +137,7 @@ const TableUsers = (props) => {
                                 <td>{item.last_name}</td>
                                 <td>
                                     <button onClick={() => handleEditUser(item)} className='btn btn-warning mx-3'>Edit</button>
-                                    <button onClick={()=>handleDeleteUser(item)} className='btn btn-danger'>Delete</button>
+                                    <button onClick={() => handleDeleteUser(item)} className='btn btn-danger'>Delete</button>
                                 </td>
                             </tr>
                         )
@@ -157,10 +178,10 @@ const TableUsers = (props) => {
 
             />
 
-            <ModalConfirm show={isShowModalDelete} 
-            handleClose={handleClose}
-            dataUserDelete={dataUserDelete}
-            handleDeleteUserFormModal={handleDeleteUserFormModal}
+            <ModalConfirm show={isShowModalDelete}
+                handleClose={handleClose}
+                dataUserDelete={dataUserDelete}
+                handleDeleteUserFormModal={handleDeleteUserFormModal}
             />
 
         </>
