@@ -1,25 +1,27 @@
-
-// import logo from "./logo.svg";
 import "./App.scss";
 import Container from 'react-bootstrap/Container';
 import Header from "./components/Header";
-import TableUsers from "./components/TableUsers";
 import { ToastContainer } from 'react-toastify';
-import Home from "./components/Home";
-import { Routes, Route, Link } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { UserContext } from "./context/UserContext";
+import AppRoutes from "./routes/AppRoutes";
 function App() {
+  const { user, loginContext } = useContext(UserContext);
+  console.log(user);
 
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      loginContext(localStorage.getItem("email"), localStorage.getItem("token"));
+    }
+  }, [])
   return (
     <>
       <div className="app-container">
-      <Header />
+        <Header />
 
         <Container>
 
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/users" element={<TableUsers />} />
-          </Routes>
+          <AppRoutes />
 
         </Container>
 

@@ -7,13 +7,18 @@ import reportWebVitals from './reportWebVitals';
 import 'react-toastify/dist/ReactToastify.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { BrowserRouter } from 'react-router-dom';
+import { UserProvider } from './context/UserContext';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+  <UserProvider>
   <BrowserRouter>
   <App />
-  </BrowserRouter>
-    
+</BrowserRouter>
+  </UserProvider>
+
+   
+
   </React.StrictMode>
 );
 

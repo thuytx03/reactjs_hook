@@ -94,7 +94,7 @@ const TableUsers = (props) => {
         setSortBy(sortBy);
         setSortField(sortField)
     }
-    console.log(sortBy, sortField);
+    // console.log(sortBy, sortField);
     return (
         <>
             <div className="my-3 add-new d-flex justify-content-between align-items-center">
