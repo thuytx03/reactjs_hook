@@ -101,7 +101,7 @@ const TableUsers = (props) => {
                 <span><b>List Users:</b></span>
                 <button className="btn btn-success" onClick={() => setIsShowModalAddNew(true)}>Add new user</button>
             </div>
-            <Table striped bordered hover >
+            <Table striped bordered hover className='customize-table' >
                 <thead>
                     <tr>
                         <th >

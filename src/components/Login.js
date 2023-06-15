@@ -25,7 +25,7 @@ export const Login = () => {
       return;
     }
     setIsButtonDisabled(true);
-    let res = await loginAPI(email, password);
+    let res = await loginAPI(email.trim(), password);
     if (res && res.token) {
       loginContext(email, res.token);
       navigate("/")
@@ -42,6 +42,12 @@ export const Login = () => {
   const handleGoBack=()=>{
     navigate("/")
   }
+  const handlePressEnter= (event)=>{
+    // console.log(event);
+    if(event && event.key === 'Enter'){
+        handleLogin();
+    }
+  }
 
   return (
     <>
@@ -50,7 +56,11 @@ export const Login = () => {
         <div className="text">Email or UserName (eve.holt@reqres.in)</div>
         <input type='text' placeholder='Email or Username' value={email} onChange={(event) => setEmail(event.target.value)} />
         <div className='input-2'>
-          <input type={isShowPassword === true ? "text" : "password"} className='w-100' placeholder='Password' value={password} onChange={(event) => setPassword(event.target.value)} />
+          <input type={isShowPassword === true ? "text" : "password"} className='w-100' placeholder='Password' 
+          value={password} 
+          onChange={(event) => setPassword(event.target.value)}
+          onKeyDown={(event)=>handlePressEnter(event)}
+          />
           <i className={isShowPassword === true ? "fa-solid fa-eye" : "fa-solid fa-eye-slash"} onClick={() => setIsShowPassword(!isShowPassword)}></i>
         </div>
         <button className={email && password ? "active" : ""} disabled={isButtonDisabled || !(email && password)} onClick={() => handleLogin()}>
